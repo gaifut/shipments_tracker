@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Маршрутный лист</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <h2>Маршрутный лист (Таблица 2)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Номер грузовика</th>
+                <th>Логист</th>
+                {% for date in unique_dates %}
+                    <th>{{ date }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for shipment in shipments %}
+                <tr>
+                    <td>{{ shipment.truck_no.truck_no }}</td>
+                    <td>{{ shipment.person_responsible.first_name }}</td>
+                    {% for date in unique_dates %}
+                        {% if shipment.arrival_date == date %}
+                            <td>{{ shipment.destination_point }}</td>
+                        {% else %}
+                            <td class="empty"></td>
+                        {% endif %}
+                        {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

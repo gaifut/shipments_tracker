@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>График отгрузок</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <h2>График отгрузок (Таблица 1)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Логист</th>
+                {% for date in unique_dates %}
+                    <th>{{ date }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for shipment in shipments %}
+                <tr>
+                    <td>{{ shipment.person_responsible.first_name }}</td>
+                    {% for date in unique_dates %}
+                        {% if shipment.arrival_date == date %}
+                                <td><a href="{% url 'api:logbook-list' %}">{{ shipment.truck_no }}</a>
+                                <br>{{ shipment.destination_point }}</td>
+                            {% else %}
+                                <td class="empty"></td>
+                            {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
